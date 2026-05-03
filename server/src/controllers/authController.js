@@ -135,13 +135,22 @@ const forgotPassword = async (req, res, next) => {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
-      secure: true, // Use SSL
+      secure: true,
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
       },
-      connectionTimeout: 10000, // 10 seconds timeout
+      connectionTimeout: 10000,
     });
+
+    // Verify connection configuration
+    try {
+      await transporter.verify();
+      console.log('[auth] SMTP connection successful');
+    } catch (verifyErr) {
+      console.error('[auth] SMTP Verification Failed:', verifyErr.message);
+      return res.status(503).json({ success: false, message: 'Email service configuration error.' });
+    }
 
     const mailOptions = {
       from: `"DevFlow AI" <${process.env.GMAIL_USER}>`,
