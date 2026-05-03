@@ -22,15 +22,16 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 // Security headers
+// Security headers - Relaxed for production deployment
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com"],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:', 'https://cdnjs.cloudflare.com'],
+      imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+      connectSrc: ["'self'", "*"], // Temporarily allow all for debugging
     },
   },
   crossOriginEmbedderPolicy: false,
@@ -118,6 +119,13 @@ app.use('/api/debug', aiLimiter);
 app.use('/api/interview', aiLimiter);
 app.use('/api/whatif', aiLimiter);
 app.use('/api/compare', aiLimiter);
+
+// Root route
+app.get('/', (_req, res) => res.json({ 
+  success: true, 
+  message: 'DevFlow AI API is live!',
+  documentation: 'Check /api/health for system status' 
+}));
 
 // Health check
 app.get('/api/health', (_req, res) => res.json({ success: true, message: 'DevFlow AI API is running' }));
