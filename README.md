@@ -51,20 +51,26 @@ It combines **System Design + DevOps + GenAI** into a single interactive workspa
 
 ## 📸 Screenshots
 
+
+
 <div align="center">
-
-<img src="./screenshots/home.png" width="800"/>
-
-<img src="./screenshots/login.png" width="800"/>
-
-<img src="./screenshots/dashboard.png" width="800"/>
-
-<img src="./screenshots/system-design.png" width="800"/>
-
-<img src="./screenshots/devops.png" width="800"/>
-
-<img src="./screenshots/debugger.png" width="800"/>
-
+Signup & Login Page
+<img width="1918" height="988" alt="login" src="https://github.com/user-attachments/assets/8b7fa8b2-de93-495f-ba56-97686afcc85a" />
+<img width="1918" height="988" alt="signup" src="https://github.com/user-attachments/assets/4020f50f-7a1b-426f-bfbf-76487a593cd7" />
+Dashboard
+<img width="1918" height="988" alt="dashboard_1" src="https://github.com/user-attachments/assets/d7ca538e-977e-40bb-bcba-a1a3bd90732b" />
+<img width="1918" height="988" alt="dashboard_2" src="https://github.com/user-attachments/assets/98b74734-faff-4d58-b20d-4027fa347b33" />
+SOME FEATURES
+ System Design
+ <img width="1918" height="987" alt="system deisgn generater" src="https://github.com/user-attachments/assets/d3e48f44-1bc5-44f6-b726-63eb0c9d1df2" />
+ DevOps
+  <img width="1918" height="990" alt="devops" src="https://github.com/user-attachments/assets/d2fbbd97-0f85-4c1a-bec0-5837e14f4b3b" />
+  GitHub Function
+  <img width="1918" height="997" alt="github reo page" src="https://github.com/user-attachments/assets/a01b05a6-9b10-4484-b70e-0df9781b656a" />
+  Architecture Comparison
+  <img width="1918" height="992" alt="arch compraison" src="https://github.com/user-attachments/assets/89f8ee84-a732-4c99-aee7-07176fb51fe0" />
+  Diagram Editro
+  <img width="1918" height="985" alt="diagram editior" src="https://github.com/user-attachments/assets/255c65e2-3ddb-4bd1-8578-107d6eab97f0" />
 </div>
 
 ---
