@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import apiClient from '../api/apiClient';
+import { Zap, Shield, GitBranch } from 'lucide-react';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -302,10 +303,9 @@ export default function Login() {
             {/* Premium Floating Pills */}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', zIndex: 2, position: 'relative' }}>
               {[
-                { icon: '⚡', text: 'Sub-2s responses' },
-                { icon: '🧠', text: 'LLaMA 3.3 70B Model' },
-                { icon: '🔒', text: 'Private & Encrypted' },
-                { icon: '🚀', text: 'GitHub Integration' },
+                { icon: <Zap size={14} />, text: 'Sub-2s responses' },
+                { icon: <Shield size={14} />, text: 'Private & Encrypted' },
+                { icon: <GitBranch size={14} />, text: 'GitHub Integration' },
               ].map(({ icon, text }) => (
                 <div key={text} style={{
                   display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
@@ -313,7 +313,7 @@ export default function Login() {
                   border: '1px solid rgba(255,255,255,0.08)', borderRadius: 99,
                   fontSize: '0.75rem', color: 'var(--text-2)', backdropFilter: 'blur(10px)'
                 }}>
-                  <span style={{ fontSize: '0.875rem' }}>{icon}</span>
+                  <span style={{ color: '#a78bfa', display: 'flex' }}>{icon}</span>
                   <span style={{ fontWeight: 500 }}>{text}</span>
                 </div>
               ))}
@@ -428,9 +428,9 @@ export default function Login() {
             </p>
 
             <div className="auth-trust-badges">
-              <span>🔒 End-to-end encrypted</span>
-              <span>⚡ Powered by Groq</span>
-              <span>🆓 Free forever</span>
+              <span>Secure Architecture</span>
+              <span>Groq Inference</span>
+              <span>Developer Ready</span>
             </div>
           </div>
         </div>

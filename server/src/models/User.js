@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema(
     githubAccessToken: { type: String, select: false },
     githubUsername: { type: String, default: null },
     avatar: { type: String, default: null },
+    aiUsageCount: { type: Number, default: 0 },
+    lastAiUsageDate: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

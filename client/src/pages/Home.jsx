@@ -172,15 +172,15 @@ export default function Home() {
         <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '40%', height: '60%', background: 'radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '-10%', left: '10%', width: '30%', height: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%)', zIndex: 0 }} />
 
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4rem', flexWrap: 'wrap' }}>
-          <div style={{ flex: '1 1 500px' }}>
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2.5rem', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 400px' }}>
             {/* Badge */}
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
               background: 'rgba(124,58,237,0.1)',
               border: '1px solid rgba(124,58,237,0.2)',
               borderRadius: 10, padding: '6px 14px',
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
             }}>
               <Sparkles size={13} color="#a78bfa" />
               <span style={{ fontSize: '0.75rem', color: '#a78bfa', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
@@ -188,8 +188,8 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 style={{ fontSize: '3.5rem', fontWeight: 900, color: '#ffffff', marginBottom: '1.25rem', lineHeight: 1, letterSpacing: '-0.04em' }}>
-              Hey {firstName} 👋
+            <h1 className="hero-title" style={{ fontWeight: 900, color: '#ffffff', marginBottom: '1.25rem', lineHeight: 1.1, letterSpacing: '-0.04em' }}>
+              Welcome, {firstName}
               <div style={{ height: '0.5rem' }} />
               <span style={{ 
                 background: 'linear-gradient(90deg, #7c3aed, #3b82f6)',
@@ -199,17 +199,17 @@ export default function Home() {
               }}>what are we building?</span>
             </h1>
             
-            <p style={{ fontSize: '1.125rem', color: '#94a3b8', maxWidth: 580, lineHeight: 1.8, fontWeight: 500 }}>
-              Generate system architectures, DevOps pipelines, debug errors, practice interviews, and chat with your personal AI dev assistant.
+            <p style={{ fontSize: '1rem', color: '#94a3b8', maxWidth: 580, lineHeight: 1.7, fontWeight: 500 }}>
+              Generate architectures, pipelines, debug errors, and chat with your personal AI dev assistant.
             </p>
           </div>
 
           {/* Stats Grid */}
           <div style={{ 
-            flex: '0 0 360px', 
+            flex: '1 1 300px', 
             display: 'grid', 
-            gridTemplateColumns: '1fr 1fr', 
-            gap: '1rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+            gap: '0.75rem',
           }}>
             {STATS.map(({ icon: Icon, val, lbl, color }) => (
               <div key={lbl} style={{ 

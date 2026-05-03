@@ -3,9 +3,10 @@ const { body } = require('express-validator');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { protect } = require('../middleware/authMiddleware');
+const { checkQuota } = require('../middleware/quotaMiddleware');
 const {
   importRepo, generateSystemDesign, generateDevOps,
-  deployChat, listRepos, getRepo, autoGenerate,
+  deployChat, listRepos, listGitHubUserRepos, getRepo, autoGenerate,
 } = require('../controllers/githubController');
 
 // ── GitHub OAuth ──────────────────────────────────────────────────────────────
@@ -28,6 +29,7 @@ router.get(
 
 // ── Repo APIs (all protected) ─────────────────────────────────────────────────
 router.get('/repos', protect, listRepos);
+router.get('/user-repos', protect, listGitHubUserRepos);
 
 router.post(
   '/repos/import',
@@ -37,13 +39,14 @@ router.post(
 );
 
 router.get('/repos/:repoId', protect, getRepo);
-router.post('/repos/:repoId/auto-generate', protect, autoGenerate);
-router.post('/repos/:repoId/system-design', protect, generateSystemDesign);
-router.post('/repos/:repoId/devops', protect, generateDevOps);
+router.post('/repos/:repoId/auto-generate', protect, checkQuota, autoGenerate);
+router.post('/repos/:repoId/system-design', protect, checkQuota, generateSystemDesign);
+router.post('/repos/:repoId/devops', protect, checkQuota, generateDevOps);
 
 router.post(
   '/repos/:repoId/deploy-chat',
   protect,
+  checkQuota,
   [
     body('message').trim().notEmpty().withMessage('Message is required').isLength({ max: 2000 }),
     body('history').optional().isArray(),

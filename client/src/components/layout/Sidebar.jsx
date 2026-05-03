@@ -40,9 +40,9 @@ const sections = [
   },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen }) {
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
       {/* Logo */}
       <div className="sidebar-logo">
         <div style={{

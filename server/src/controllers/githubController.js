@@ -166,7 +166,7 @@ const deployChat = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-// GET /api/github/repos — list user's imported repos
+// GET /api/github/repos — list user's imported repos (from DB)
 const listRepos = async (req, res, next) => {
   try {
     const repos = await Repo.find({ user: req.user.id })
@@ -174,6 +174,27 @@ const listRepos = async (req, res, next) => {
       .select('name fullName description language stars systemDesign devopsPipeline updatedAt');
     res.json({ success: true, data: repos });
   } catch (err) { next(err); }
+};
+
+// GET /api/github/user-repos — fetch repos directly from GitHub API
+const axios = require('axios');
+const listGitHubUserRepos = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select('+githubAccessToken');
+    if (!user || !user.githubAccessToken) {
+      return res.status(400).json({ success: false, message: 'GitHub not connected' });
+    }
+
+    const { data } = await axios.get('https://api.github.com/user/repos', {
+      headers: { Authorization: `token ${user.githubAccessToken}` },
+      params: { sort: 'updated', per_page: 30 }
+    });
+
+    res.json({ success: true, data });
+  } catch (err) {
+    console.error('[github] Fetch User Repos Error:', err.message);
+    res.status(500).json({ success: false, message: 'Failed to fetch repositories from GitHub' });
+  }
 };
 
 // GET /api/github/repos/:repoId

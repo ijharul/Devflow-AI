@@ -5,27 +5,47 @@ import { GitBranch, Plus, Star, ExternalLink, Network, Container, MessageSquare,
 
 export default function GitHubRepos() {
   const [repos, setRepos] = useState([]);
+  const [userRepos, setUserRepos] = useState([]);
   const [repoUrl, setRepoUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
+  const [fetchingUser, setFetchingUser] = useState(false);
   const [error, setError] = useState('');
   const [importedRepo, setImportedRepo] = useState(null);
   const navigate = useNavigate();
 
+  const fetchImported = async () => {
+    try {
+      const { data } = await apiClient.get('/github/repos');
+      setRepos(data.data);
+    } catch {}
+    finally { setFetching(false); }
+  };
+
+  const fetchGitHubUserRepos = async () => {
+    setFetchingUser(true);
+    try {
+      const { data } = await apiClient.get('/github/user-repos');
+      setUserRepos(data.data);
+    } catch (err) {
+      console.log('GitHub not connected or error:', err.message);
+    } finally {
+      setFetchingUser(false);
+    }
+  };
+
   useEffect(() => {
-    apiClient.get('/github/repos')
-      .then(({ data }) => setRepos(data.data))
-      .catch(() => {})
-      .finally(() => setFetching(false));
+    fetchImported();
+    fetchGitHubUserRepos();
   }, []);
 
-  const handleImport = async () => {
-    if (!repoUrl.trim()) return;
+  const handleImport = async (url) => {
+    const targetUrl = url || repoUrl;
+    if (!targetUrl.trim()) return;
     setLoading(true); setError(''); setImportedRepo(null);
     try {
-      const { data } = await apiClient.post('/github/repos/import', { repoUrl });
+      const { data } = await apiClient.post('/github/repos/import', { repoUrl: targetUrl });
       setRepoUrl('');
-      // Navigate to the hub which will auto-generate everything
       navigate(`/github/${data.data.id}`);
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
@@ -49,60 +69,81 @@ export default function GitHubRepos() {
         </a>
       </div>
 
-      {/* Import Box */}
-      <div className="section" style={{ marginBottom: '1.5rem' }}>
-        <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Import Repository</p>
-        <div style={{ display: 'flex', gap: '0.625rem' }}>
-          <div style={{ flex: 1, position: 'relative' }}>
-            <GitBranch size={14} style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-3)', pointerEvents: 'none' }} />
-            <input type="text" value={repoUrl} onChange={e => setRepoUrl(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleImport()}
-              className="input" style={{ paddingLeft: '2.25rem', paddingRight: '1rem', paddingTop: '0.6875rem', paddingBottom: '0.6875rem' }}
-              placeholder="https://github.com/owner/repository" />
-          </div>
-          <button onClick={handleImport} disabled={loading || !repoUrl.trim()} className="btn-primary"
-            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0 1.25rem', whiteSpace: 'nowrap' }}>
-            {loading ? <><div style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.9s linear infinite' }} />Importing...</>
-              : <><Plus size={14} />Import Repo</>}
-            <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
-          </button>
-        </div>
-
-        {error && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 10, padding: '0.625rem 0.875rem', color: '#f87171', fontSize: '0.8rem', marginTop: '0.75rem' }}>
-            <AlertCircle size={13} /> {error}
-          </div>
-        )}
-
-        {/* Success */}
-        {importedRepo && (
-          <div style={{ background: 'rgba(52,211,153,0.07)', border: '1px solid rgba(52,211,153,0.2)', borderRadius: 10, padding: '0.875rem', marginTop: '0.75rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-              <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#34d399' }} />
-              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#34d399' }}>{importedRepo.fullName} imported!</span>
+      <div className="responsive-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '1.5rem' }}>
+        <div>
+          {/* Import Box */}
+          <div className="section" style={{ marginBottom: '1.5rem' }}>
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Import Manually</p>
+            <div style={{ display: 'flex', gap: '0.625rem', flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: 200, position: 'relative' }}>
+                <GitBranch size={14} style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-3)', pointerEvents: 'none' }} />
+                <input type="text" value={repoUrl} onChange={e => setRepoUrl(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleImport()}
+                  className="input" style={{ paddingLeft: '2.25rem', paddingRight: '1rem', paddingTop: '0.6875rem', paddingBottom: '0.6875rem' }}
+                  placeholder="https://github.com/owner/repository" />
+              </div>
+              <button onClick={() => handleImport()} disabled={loading || !repoUrl.trim()} className="btn-primary"
+                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0 1.25rem', whiteSpace: 'nowrap', flex: '1 0 auto' }}>
+                {loading ? <><div style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin 0.9s linear infinite' }} />Importing...</>
+                  : <><Plus size={14} />Import Repo</>}
+              </button>
             </div>
-            <p style={{ fontSize: '0.75rem', color: '#4a5070' }}>
-              {importedRepo.fileCount} files found · Key files: {importedRepo.keyFilesFound?.join(', ') || 'none'}
-            </p>
+            {error && <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(239,68,68,0.07)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 10, padding: '0.625rem 0.875rem', color: '#f87171', fontSize: '0.8rem', marginTop: '0.75rem' }}><AlertCircle size={13} /> {error}</div>}
           </div>
-        )}
-      </div>
 
-      {/* Repo List */}
-      {fetching ? (
-        <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-3)', fontSize: '0.875rem' }}>Loading repos...</div>
-      ) : repos.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-4)' }}>
-          <GitBranch size={40} style={{ margin: '0 auto 1rem', display: 'block', opacity: 0.3 }} />
-          <p style={{ fontSize: '0.875rem' }}>No repos imported yet. Paste a GitHub URL above to get started.</p>
+          {/* Repo List */}
+          <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>Recently Imported</p>
+          {fetching ? (
+            <div style={{ textAlign: 'center', padding: '3rem 0', color: 'var(--text-3)', fontSize: '0.875rem' }}>Loading...</div>
+          ) : repos.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '4rem 0', color: 'var(--text-4)', background: 'rgba(255,255,255,0.02)', borderRadius: 14, border: '1px dashed #2a2d46' }}>
+              <GitBranch size={40} style={{ margin: '0 auto 1rem', display: 'block', opacity: 0.3 }} />
+              <p style={{ fontSize: '0.875rem' }}>No repos imported yet.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              {repos.map((repo) => (
+                <RepoCard key={repo._id || repo.fullName} repo={repo} />
+              ))}
+            </div>
+          )}
         </div>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          {repos.map((repo) => (
-            <RepoCard key={repo._id || repo.fullName} repo={repo} />
-          ))}
+
+        {/* Sidebar: User GitHub Repos */}
+        <div className="section" style={{ height: 'fit-content', maxHeight: 'calc(100vh - 150px)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Your GitHub Repos</p>
+            <button onClick={fetchGitHubUserRepos} style={{ background: 'none', border: 'none', color: '#a78bfa', fontSize: '0.65rem', fontWeight: 600, cursor: 'pointer' }}>Refresh</button>
+          </div>
+          
+          <div style={{ flex: 1, overflowY: 'auto', paddingRight: '0.5rem' }}>
+            {fetchingUser ? (
+              <div style={{ textAlign: 'center', padding: '2rem 0', color: 'var(--text-4)', fontSize: '0.75rem' }}>Fetching from GitHub...</div>
+            ) : userRepos.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '2rem 0', color: 'var(--text-4)', fontSize: '0.75rem' }}>
+                <p>Connect GitHub to see your repositories.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {userRepos.map(gr => (
+                  <div key={gr.id} style={{ padding: '0.75rem', background: '#0a0d1f', border: '1px solid #1e2136', borderRadius: 10, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontSize: '0.8rem', fontWeight: 600, color: 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{gr.name}</p>
+                      <p style={{ fontSize: '0.6rem', color: 'var(--text-4)', marginTop: 2 }}>{gr.language || 'Unknown'}</p>
+                    </div>
+                    <button 
+                      onClick={() => handleImport(gr.html_url)}
+                      disabled={loading}
+                      style={{ padding: '4px 8px', background: 'rgba(124,58,237,0.1)', border: '1px solid rgba(124,58,237,0.2)', borderRadius: 6, color: '#a78bfa', fontSize: '0.65rem', fontWeight: 600, cursor: 'pointer' }}>
+                      Import
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

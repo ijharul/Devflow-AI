@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { lazy, Suspense, useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Navbar from './components/layout/Navbar';
@@ -37,19 +37,30 @@ const ProtectedRoute = ({ children }) => {
   return user ? children : <Navigate to="/login" replace />;
 };
 
-const AppLayout = ({ children }) => (
-  <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', overflow: 'hidden' }}>
-    <Sidebar />
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
-      <Navbar />
-      <main style={{ flex: 1, overflowY: 'auto', padding: '2rem 2.5rem' }}>
-        <Suspense fallback={<PageLoader />}>
-          {children}
-        </Suspense>
-      </main>
+const AppLayout = ({ children }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  // Close sidebar when route changes on mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location]);
+
+  return (
+    <div style={{ display: 'flex', height: '100vh', background: 'var(--bg)', overflow: 'hidden', position: 'relative' }}>
+      <div className={`sidebar-overlay ${sidebarOpen ? 'visible' : ''}`} onClick={() => setSidebarOpen(false)} />
+      <Sidebar isOpen={sidebarOpen} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
+        <Navbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+        <main style={{ flex: 1, overflowY: 'auto', padding: '2rem 2.5rem' }}>
+          <Suspense fallback={<PageLoader />}>
+            {children}
+          </Suspense>
+        </main>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const P = ({ children }) => (
   <ProtectedRoute><AppLayout>{children}</AppLayout></ProtectedRoute>

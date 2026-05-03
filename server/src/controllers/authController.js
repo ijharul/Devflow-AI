@@ -131,16 +131,19 @@ const forgotPassword = async (req, res, next) => {
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    // Setup nodemailer with better config for production
+    // Setup nodemailer with Port 587 and IPv4 preference for Render reliability
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
+      port: 587,
+      secure: false, // Use STARTTLS
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
       },
-      connectionTimeout: 10000,
+      tls: {
+        // Force IPv4 to avoid ENETUNREACH on Render
+        rejectUnauthorized: true,
+      }
     });
 
     // Verify connection configuration
@@ -148,8 +151,11 @@ const forgotPassword = async (req, res, next) => {
       await transporter.verify();
       console.log('[auth] SMTP connection successful');
     } catch (verifyErr) {
-      console.error('[auth] SMTP Verification Failed:', verifyErr.message);
-      return res.status(503).json({ success: false, message: 'Email service configuration error.' });
+      console.error('[auth] SMTP Verification Failed:', verifyErr);
+      return res.status(503).json({ 
+        success: false, 
+        message: `Email config error: ${verifyErr.message}` 
+      });
     }
 
     const mailOptions = {

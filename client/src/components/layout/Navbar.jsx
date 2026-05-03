@@ -3,21 +3,21 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { LogOut, ChevronRight, Zap } from 'lucide-react';
 
 const ROUTES = {
-  '/':                 { label: 'Dashboard',             emoji: '⚡' },
-  '/system-design':    { label: 'System Design',         emoji: '🏗️' },
-  '/devops':           { label: 'DevOps',                emoji: '🐳' },
-  '/chat':             { label: 'AI Assistant',          emoji: '💬' },
-  '/code-analyzer':    { label: 'Code Analyzer',         emoji: '🔍' },
-  '/debug':            { label: 'Error Debugger',        emoji: '🐛' },
-  '/interview':        { label: 'Interview Mode',        emoji: '🎓' },
-  '/diagram-editor':   { label: 'Diagram Editor',        emoji: '✏️' },
-  '/whatif':           { label: 'What-if Simulator',     emoji: '🧪' },
-  '/compare':          { label: 'Architecture Compare',  emoji: '⚖️' },
-  '/github':           { label: 'GitHub Repos',          emoji: '🐙' },
-  '/history':          { label: 'Saved History',         emoji: '📋' },
+  '/':                 { label: 'Dashboard' },
+  '/system-design':    { label: 'System Design' },
+  '/devops':           { label: 'DevOps' },
+  '/chat':             { label: 'AI Assistant' },
+  '/code-analyzer':    { label: 'Code Analyzer' },
+  '/debug':            { label: 'Error Debugger' },
+  '/interview':        { label: 'Interview Mode' },
+  '/diagram-editor':   { label: 'Diagram Editor' },
+  '/whatif':           { label: 'What-if Simulator' },
+  '/compare':          { label: 'Architecture Compare' },
+  '/github':           { label: 'GitHub Repos' },
+  '/history':          { label: 'Saved History' },
 };
 
-export default function Navbar() {
+export default function Navbar({ onToggleSidebar }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -27,12 +27,21 @@ export default function Navbar() {
 
   return (
     <div className="topbar">
-      {/* Left: breadcrumb */}
+      {/* Left: breadcrumb + Mobile Toggle */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <button 
+          onClick={onToggleSidebar}
+          className="mobile-menu-toggle"
+          style={{ 
+            background: 'none', border: 'none', color: 'var(--text-3)', 
+            padding: '4px', cursor: 'pointer', display: 'none',
+            alignItems: 'center', justifyContent: 'center'
+          }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
         <span style={{ fontSize: '0.75rem', color: 'var(--text-4)', fontWeight: 500 }}>DevFlow AI</span>
         <ChevronRight size={13} style={{ color: 'var(--text-4)' }} />
         <span style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-          <span style={{ fontSize: '0.875rem' }}>{route.emoji}</span>
           {route.label}
         </span>
       </div>
