@@ -188,7 +188,11 @@ export default function Home() {
               </span>
             </div>
 
-            <h1 className="hero-title" style={{ fontWeight: 800, color: '#ffffff', marginBottom: '0.75rem', lineHeight: 1.1, letterSpacing: '-0.03em', wordBreak: 'break-word', whiteSpace: 'normal' }}>
+            <h1 className="hero-title" style={{ 
+              fontWeight: 800, color: '#ffffff', marginBottom: '0.75rem', 
+              lineHeight: 1.2, letterSpacing: '-0.03em', wordBreak: 'keep-all',
+              fontSize: 'clamp(1.5rem, 6vw, 2.25rem)' 
+            }}>
               Welcome, {firstName}
               <div style={{ height: '0.25rem' }} className="desktop-only" />
               <span style={{ 
@@ -199,18 +203,18 @@ export default function Home() {
               }}>what are we building?</span>
             </h1>
             
-            <p style={{ fontSize: '0.9rem', color: '#94a3b8', maxWidth: '100%', width: '480px', lineHeight: 1.6, fontWeight: 500 }}>
+            <p style={{ fontSize: '0.85rem', color: '#94a3b8', maxWidth: '100%', lineHeight: 1.5, fontWeight: 500 }}>
               Generate architectures, pipelines, debug errors, and chat with your personal AI dev assistant.
             </p>
           </div>
-
-          {/* Stats Grid - Fixed 2x2 for desktop, responsive for mobile */}
+ 
+          {/* Stats Grid - 2x2 for both mobile and desktop */}
           <div className="hero-stats-grid" style={{ 
-            flex: '1 1 300px', 
+            flex: '1 1 auto', 
             maxWidth: '100%',
             display: 'grid', 
             gridTemplateColumns: 'repeat(2, 1fr)', 
-            gap: '0.75rem',
+            gap: '0.65rem',
           }}>
             {STATS.map(({ icon: Icon, val, lbl, color }) => (
               <div key={lbl} style={{ 
