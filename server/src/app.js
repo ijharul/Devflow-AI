@@ -38,8 +38,31 @@ app.use(helmet({
 }));
 
 // CORS — allow frontend origin
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://localhost:3000',
+  /\.vercel\.app$/, // Allow all Vercel subdomains
+  /\.onrender\.com$/ // Allow Render subdomains
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    const isAllowed = allowedOrigins.some(pattern => {
+      if (pattern instanceof RegExp) return pattern.test(origin);
+      return pattern === origin;
+    });
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.warn(`[cors] Blocked request from origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
