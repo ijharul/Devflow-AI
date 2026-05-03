@@ -1,8 +1,8 @@
 {
-  "name": "devflow-ai-root",
+  "name": "devflow-ai",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "build": "cd client && npm install && npm run build",
-    "install": "cd client && npm install"
+    "build": "npm install --prefix client && npm run build --prefix client"
   }
 }
