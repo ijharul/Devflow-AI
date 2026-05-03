@@ -1,0 +1,13 @@
+node_modules/
+**/node_modules/
+.env
+**/.env
+.env.local
+dist/
+**/dist/
+build/
+**/build/
+.DS_Store
+*.log
+db_data/
+.gemini/

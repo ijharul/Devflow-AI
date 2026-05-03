@@ -1,0 +1,83 @@
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { LogOut, ChevronRight, Zap } from 'lucide-react';
+
+const ROUTES = {
+  '/':                 { label: 'Dashboard',             emoji: '⚡' },
+  '/system-design':    { label: 'System Design',         emoji: '🏗️' },
+  '/devops':           { label: 'DevOps',                emoji: '🐳' },
+  '/chat':             { label: 'AI Assistant',          emoji: '💬' },
+  '/code-analyzer':    { label: 'Code Analyzer',         emoji: '🔍' },
+  '/debug':            { label: 'Error Debugger',        emoji: '🐛' },
+  '/interview':        { label: 'Interview Mode',        emoji: '🎓' },
+  '/diagram-editor':   { label: 'Diagram Editor',        emoji: '✏️' },
+  '/whatif':           { label: 'What-if Simulator',     emoji: '🧪' },
+  '/compare':          { label: 'Architecture Compare',  emoji: '⚖️' },
+  '/github':           { label: 'GitHub Repos',          emoji: '🐙' },
+  '/history':          { label: 'Saved History',         emoji: '📋' },
+};
+
+export default function Navbar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const route = ROUTES[pathname] || ROUTES['/'];
+  const initial = user?.name?.[0]?.toUpperCase() || '?';
+
+  return (
+    <div className="topbar">
+      {/* Left: breadcrumb */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-4)', fontWeight: 500 }}>DevFlow AI</span>
+        <ChevronRight size={13} style={{ color: 'var(--text-4)' }} />
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+          <span style={{ fontSize: '0.875rem' }}>{route.emoji}</span>
+          {route.label}
+        </span>
+      </div>
+
+      {/* Right: status + user */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        {/* AI status chip */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.25rem 0.625rem', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 99 }}>
+          <div className="status-dot online" style={{ width: 6, height: 6 }} />
+          <span style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>AI Ready</span>
+        </div>
+
+        {/* User */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.5rem', borderRadius: 99, background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)' }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: '50%',
+            background: 'linear-gradient(135deg, #7c3aed, #3b82f6)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'white', fontSize: '0.7rem', fontWeight: 700,
+            boxShadow: '0 0 10px rgba(124,58,237,0.4)',
+            flexShrink: 0,
+          }}>
+            {initial}
+          </div>
+          <span style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 500, maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {user?.name?.split(' ')[0]}
+          </span>
+        </div>
+
+        {/* Logout */}
+        <button
+          onClick={() => { logout(); navigate('/login'); }}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '0.35rem',
+            fontSize: '0.7rem', color: 'var(--text-4)',
+            background: 'none', border: '1px solid transparent',
+            borderRadius: 7, padding: '0.35rem 0.6rem',
+            cursor: 'pointer', transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.borderColor = 'rgba(248,113,113,0.25)'; e.currentTarget.style.background = 'rgba(248,113,113,0.07)'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-4)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.background = 'none'; }}
+        >
+          <LogOut size={12} /> Sign out
+        </button>
+      </div>
+    </div>
+  );
+}
