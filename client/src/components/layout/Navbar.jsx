@@ -40,8 +40,8 @@ export default function Navbar({ onToggleSidebar }) {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <span style={{ fontSize: '0.75rem', color: 'var(--text-4)', fontWeight: 500 }}>DevFlow AI</span>
-        <ChevronRight size={13} style={{ color: 'var(--text-4)' }} />
-        <span style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+        <ChevronRight size={13} style={{ color: 'var(--text-4)' }} className="desktop-only" />
+        <span className="desktop-only" style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
           {route.label}
         </span>
       </div>
@@ -51,7 +51,7 @@ export default function Navbar({ onToggleSidebar }) {
         {/* AI status chip */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.25rem 0.625rem', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 99 }}>
           <div className="status-dot online" style={{ width: 6, height: 6 }} />
-          <span style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>AI Ready</span>
+          <span className="desktop-only" style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>AI Ready</span>
         </div>
 
         {/* User */}
@@ -66,7 +66,7 @@ export default function Navbar({ onToggleSidebar }) {
           }}>
             {initial}
           </div>
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 500, maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          <span className="desktop-only" style={{ fontSize: '0.75rem', color: 'var(--text-2)', fontWeight: 500, maxWidth: 90, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {user?.name?.split(' ')[0]}
           </span>
         </div>
@@ -84,7 +84,7 @@ export default function Navbar({ onToggleSidebar }) {
           onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.borderColor = 'rgba(248,113,113,0.25)'; e.currentTarget.style.background = 'rgba(248,113,113,0.07)'; }}
           onMouseLeave={e => { e.currentTarget.style.color = 'var(--text-4)'; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.background = 'none'; }}
         >
-          <LogOut size={12} /> Sign out
+          <LogOut size={12} /> <span className="desktop-only">Sign out</span>
         </button>
       </div>
     </div>

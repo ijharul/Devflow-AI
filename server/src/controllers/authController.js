@@ -131,32 +131,18 @@ const forgotPassword = async (req, res, next) => {
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    // Setup nodemailer with Port 587 and IPv4 preference for Render reliability
+    // Final Robust Config for Render: Port 465 + Pool
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
-      port: 587,
-      secure: false, // Use STARTTLS
+      port: 465,
+      secure: true, // SSL
+      pool: true,   // Use connection pooling
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
       },
-      tls: {
-        // Force IPv4 to avoid ENETUNREACH on Render
-        rejectUnauthorized: true,
-      }
+      connectionTimeout: 10000, // 10s
     });
-
-    // Verify connection configuration
-    try {
-      await transporter.verify();
-      console.log('[auth] SMTP connection successful');
-    } catch (verifyErr) {
-      console.error('[auth] SMTP Verification Failed:', verifyErr);
-      return res.status(503).json({ 
-        success: false, 
-        message: `Email config error: ${verifyErr.message}` 
-      });
-    }
 
     const mailOptions = {
       from: `"DevFlow AI" <${process.env.GMAIL_USER}>`,

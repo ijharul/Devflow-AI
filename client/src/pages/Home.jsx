@@ -172,43 +172,43 @@ export default function Home() {
         <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '40%', height: '60%', background: 'radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '-10%', left: '10%', width: '30%', height: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.08), transparent 70%)', zIndex: 0 }} />
 
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2.5rem', flexWrap: 'wrap' }}>
-          <div style={{ flex: '1 1 400px' }}>
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '3rem', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 500px' }}>
             {/* Badge */}
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              background: 'rgba(124,58,237,0.1)',
-              border: '1px solid rgba(124,58,237,0.2)',
-              borderRadius: 10, padding: '6px 14px',
+              display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+              background: 'rgba(167,139,250,0.1)',
+              border: '1px solid rgba(167,139,250,0.15)',
+              borderRadius: 99, padding: '5px 12px',
               marginBottom: '1rem',
             }}>
-              <Sparkles size={13} color="#a78bfa" />
-              <span style={{ fontSize: '0.75rem', color: '#a78bfa', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              <Sparkles size={12} color="#a78bfa" />
+              <span style={{ fontSize: '0.65rem', color: '#a78bfa', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                 AI-Powered Developer Playground
               </span>
             </div>
 
-            <h1 className="hero-title" style={{ fontWeight: 900, color: '#ffffff', marginBottom: '1.25rem', lineHeight: 1.1, letterSpacing: '-0.04em' }}>
+            <h1 className="hero-title" style={{ fontWeight: 800, color: '#ffffff', marginBottom: '0.75rem', lineHeight: 1.1, letterSpacing: '-0.03em', wordBreak: 'break-word', whiteSpace: 'normal' }}>
               Welcome, {firstName}
-              <div style={{ height: '0.5rem' }} />
+              <div style={{ height: '0.25rem' }} className="desktop-only" />
               <span style={{ 
-                background: 'linear-gradient(90deg, #7c3aed, #3b82f6)',
+                background: 'linear-gradient(90deg, #a78bfa, #818cf8)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-                display: 'inline-block'
+                display: 'block'
               }}>what are we building?</span>
             </h1>
             
-            <p style={{ fontSize: '1rem', color: '#94a3b8', maxWidth: 580, lineHeight: 1.7, fontWeight: 500 }}>
+            <p style={{ fontSize: '0.9rem', color: '#94a3b8', maxWidth: '100%', width: '480px', lineHeight: 1.6, fontWeight: 500 }}>
               Generate architectures, pipelines, debug errors, and chat with your personal AI dev assistant.
             </p>
           </div>
 
-          {/* Stats Grid */}
-          <div style={{ 
-            flex: '1 1 300px', 
+          {/* Stats Grid - Fixed 2x2 for desktop */}
+          <div className="hero-stats-grid" style={{ 
+            flex: '0 0 340px', 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+            gridTemplateColumns: 'repeat(2, 1fr)', 
             gap: '0.75rem',
           }}>
             {STATS.map(({ icon: Icon, val, lbl, color }) => (
@@ -216,37 +216,34 @@ export default function Home() {
                 background: 'rgba(255,255,255,0.03)', 
                 backdropFilter: 'blur(10px)',
                 border: '1px solid rgba(255,255,255,0.06)', 
-                borderRadius: 20, 
-                padding: '1.125rem 1.25rem',
+                borderRadius: 16, 
+                padding: '1rem',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '0.75rem',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                gap: '0.625rem',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                 cursor: 'default',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
               }} onMouseEnter={e => {
                 e.currentTarget.style.background = 'rgba(255,255,255,0.06)';
-                e.currentTarget.style.borderColor = color + '60';
-                e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)';
-                e.currentTarget.style.boxShadow = `0 10px 25px -5px ${color}20`;
+                e.currentTarget.style.borderColor = color + '50';
+                e.currentTarget.style.transform = 'translateY(-3px)';
               }} onMouseLeave={e => {
                 e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
-                e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+                e.currentTarget.style.transform = 'translateY(0)';
               }}>
                 <div style={{
-                  width: 38, height: 38,
+                  width: 32, height: 32,
                   background: `${color}15`,
-                  border: `1px solid ${color}30`,
-                  borderRadius: 12,
+                  border: `1px solid ${color}25`,
+                  borderRadius: 10,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Icon size={18} color={color} />
+                  <Icon size={16} color={color} />
                 </div>
                 <div>
-                  <span style={{ fontSize: '1.125rem', fontWeight: 800, color: '#ffffff', display: 'block', lineHeight: 1.2 }}>{val}</span>
-                  <span style={{ fontSize: '0.65rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.06em' }}>{lbl}</span>
+                  <span style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', display: 'block', lineHeight: 1.2 }}>{val}</span>
+                  <span style={{ fontSize: '0.55rem', color: '#64748b', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '0.05em' }}>{lbl}</span>
                 </div>
               </div>
             ))}
