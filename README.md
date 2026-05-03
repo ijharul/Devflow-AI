@@ -1,43 +1,140 @@
-# ⚡ DevFlow AI — The Ultimate Developer Playground
+# ⚡ DevFlow AI — AI-Powered Developer Playground
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=vercel)](https://devflow-ai-rust.vercel.app)
-[![Tech Stack](https://img.shields.io/badge/MERN-Stack-blue?style=for-the-badge&logo=mongodb)](https://devflow-ai-rust.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge\&logo=vercel)](https://devflow-ai-rust.vercel.app)
+[![Tech Stack](https://img.shields.io/badge/MERN-Stack-blue?style=for-the-badge\&logo=mongodb)](https://devflow-ai-rust.vercel.app)
 
-**DevFlow AI** is a premium, AI-powered developer platform designed to streamline system architecture design, automate DevOps pipelines, and provide intelligent debugging assistance. Powered by **LLaMA 3.3 (70B)** via **Groq Inference**, it delivers sub-2s responses for complex architectural decisions.
-
-![DevFlow AI Banner](https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=2070)
+**DevFlow AI** is a full-stack, AI-powered platform designed to help developers design scalable systems, generate DevOps pipelines, and debug issues intelligently.
+It combines **System Design + DevOps + GenAI** into a single interactive workspace.
 
 ---
 
-## 🔗 Live Link
-Visit the platform here: [**https://devflow-ai-rust.vercel.app**](https://devflow-ai-rust.vercel.app)
+## 🌐 Live Demo
+
+* Frontend: https://devflow-ai-rust.vercel.app
+* Backend: https://devflow-ai-91vt.onrender.com
 
 ---
 
 ## 🚀 Key Features
 
 ### 🏗️ AI System Design
-- **Instant Architecture:** Generate full-stack system designs with one prompt.
-- **Mermaid Diagrams:** Automatic generation of architecture diagrams.
-- **What-if Simulator:** Explore the impact of switching databases or scaling services.
 
-### ☸️ DevOps Engine
-- **CI/CD Pipelines:** Generate GitHub Actions and GitLab CI YAMLs instantly.
-- **Infrastructure as Code:** Auto-generate Dockerfiles and docker-compose configurations.
-- **Deployment Checklists:** Step-by-step guides for AWS, Vercel, and Render.
+* Generate full-stack architectures from prompts
+* Visualize system flows (Mermaid diagrams)
+* Simulate scaling and infrastructure changes
+
+---
+
+### ⚙️ DevOps Engine
+
+* Generate CI/CD pipelines (GitHub Actions, GitLab CI)
+* Auto-create Docker & deployment configs
+* Deployment guides for cloud platforms
+
+---
 
 ### 🐞 Intelligent Debugger
-- **Root Cause Analysis:** Paste an error and code to get an instant explanation.
-- **Auto-Patching:** AI suggests fixed code blocks ready to copy-paste.
+
+* Root cause analysis for errors
+* AI-generated fixes and code patches
+* Debug suggestions in real-time
+
+---
+
+### 🔐 Authentication System
+
+* JWT-based authentication
+* OAuth login (Google & GitHub)
+* Secure protected routes
+
 ---
 
 ## 📸 Screenshots
 
-| Dashboard | System Design |
+<div align="center">
 
+<img src="./screenshots/home.png" width="800"/>
 
-| DevOps Tool | AI Chat |
+<img src="./screenshots/login.png" width="800"/>
 
+<img src="./screenshots/dashboard.png" width="800"/>
+
+<img src="./screenshots/system-design.png" width="800"/>
+
+<img src="./screenshots/devops.png" width="800"/>
+
+<img src="./screenshots/debugger.png" width="800"/>
+
+</div>
+
+---
+
+## 🧠 System Design Overview
+
+The platform follows a **distributed client-server architecture**:
+
+* **Frontend (React + Vite)** → UI & API interaction
+* **Backend (Node.js + Express)** → Business logic & authentication
+* **Database (MongoDB Atlas)** → Data persistence
+* **External Services** → OAuth (Google/GitHub) + AI APIs
+
+### 🔄 Data Flow
+
+Client → API → Database → Response
+
+### 🔐 Auth Flow
+
+OAuth → Backend callback → JWT → Client session
+
+---
+
+## ⚙️ DevOps & Deployment
+
+* Frontend deployed on Vercel
+* Backend deployed on Render
+* Database hosted on MongoDB Atlas
+
+### 🔁 CI/CD
+
+* GitHub push triggers automatic deployment
+
+### 🔧 Environment Management
+
+* `.env` based configuration
+* Separate development and production setups
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js (Vite)
+* Modern CSS (Glassmorphism UI)
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* MongoDB Atlas
+
+### Authentication
+
+* JWT
+* Google OAuth
+* GitHub OAuth
+
+### AI Integration
+
+* Groq API (LLaMA 3.3 70B)
+
+### DevOps
+
+* Git & GitHub
+* CI/CD via Vercel & Render
 
 ---
 
@@ -45,79 +142,60 @@ Visit the platform here: [**https://devflow-ai-rust.vercel.app**](https://devflo
 
 ```text
 devflow-ai/
-├── client/                # Frontend (React 19 + Vite)
-│   ├── src/
-│   │   ├── api/           # Axios client & API logic
-│   │   ├── components/    # Reusable UI components
-│   │   ├── context/       # Auth & Global state
-│   │   ├── pages/         # Page components (Home, Login, etc.)
-│   │   └── utils/         # Helper functions
-│   ├── public/            # Static assets
-│   └── vercel.json        # Vercel deployment config
-├── server/                # Backend (Node.js + Express)
-│   ├── src/
-│   │   ├── config/        # Passport & DB configs
-│   │   ├── controllers/   # Route handlers
-│   │   ├── middleware/    # Auth & Quota logic
-│   │   ├── models/        # Mongoose schemas
-│   │   └── routes/        # API endpoints
-│   ├── scripts/           # DB cleanup & maintenance scripts
-│   └── .env               # Server environment variables
-├── package.json           # Root build proxy
-└── vercel.json            # Root deployment routing
+├── client/        # Frontend
+├── server/        # Backend
+├── docker-compose.yml
+└── README.md
 ```
-
----
-
-## 🛠️ Tech Stack
-
-- **Frontend:** React 19, Vite, Lucide React, CSS3 (Modern Glassmorphism)
-- **Backend:** Node.js, Express, MongoDB (Mongoose)
-- **AI Engine:** LLaMA 3.3 (70B) via Groq Cloud
-- **Email System:** Resend API / Nodemailer (SMTP)
-- **Deployment:** Vercel (Frontend) & Render (Backend)
 
 ---
 
 ## 📦 Installation
 
-1. **Clone the repo:**
-   ```bash
-   git clone https://github.com/your-username/devflow-ai.git
-   cd devflow-ai
-   ```
+```bash
+git clone https://github.com/ijharul/Devflow-AI.git
+cd Devflow-AI
 
-2. **Install Dependencies:**
-   ```bash
-   # Install server deps
-   cd server && npm install
-   # Install client deps
-   cd ../client && npm install
-   ```
+# Backend
+cd server && npm install
 
-3. **Set up Environment Variables:**
-   Create a `.env` file in the `server` directory:
-   ```env
-   PORT=5000
-   MONGODB_URI=your_mongodb_uri
-   JWT_SECRET=your_secret
-   GROQ_API_KEY=your_groq_key
-   RESEND_API_KEY=your_resend_key
-   CLIENT_URL=https://devflow-ai-rust.vercel.app
-   ```
-
-4. **Run Locally:**
-   ```bash
-   # From root
-   npm run dev
-   ```
+# Frontend
+cd ../client && npm install
+```
 
 ---
 
-## 📱 Mobile-First Design
-Optimized for high-fidelity mobile experiences. Verified and refined for modern mobile devices including **Nothing Phone 2a**.
+## ▶️ Run Locally
+
+```bash
+# Backend
+cd server
+npm run dev
+
+# Frontend
+cd client
+npm run dev
+```
 
 ---
 
-## 📄 License
-MIT License. Created by [Ijharul](https://github.com/ijharul).
+## 🔮 Future Enhancements
+
+* 🐳 Docker containerization
+* ⚡ Redis caching
+* 📡 WebSockets (real-time updates)
+* 📊 Logging & monitoring
+* 💳 AI usage credits / billing system
+
+---
+
+## 👨‍💻 Author
+
+**Ijharul Haque**
+B.Tech CSE | Full Stack Developer
+
+---
+
+## ⭐ If you like this project
+
+Give it a star on GitHub ⭐
