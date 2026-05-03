@@ -342,7 +342,7 @@ export default function Login() {
             </div>
 
             <div className="auth-form-header">
-              <h1 className="auth-form-title">
+              <h1 className="auth-form-title" style={{ whiteSpace: 'nowrap', fontSize: 'clamp(1.5rem, 5vw, 2.25rem)' }}>
                 Welcome <span style={{ background: 'linear-gradient(135deg, #c4b5fd, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>back</span>
               </h1>
               <p className="auth-form-subtitle">Sign in to your workspace to continue</p>
@@ -427,10 +427,25 @@ export default function Login() {
               <Link to="/register" className="auth-footer-link">Create one free →</Link>
             </p>
 
-            <div className="auth-trust-badges">
-              <span>Secure Architecture</span>
-              <span>Groq Inference</span>
-              <span>Developer Ready</span>
+            <div style={{ 
+              display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', 
+              marginTop: '1.5rem', padding: '1rem', borderTop: '1px solid var(--border)' 
+            }}>
+              {[
+                { icon: <Shield size={12} />, text: 'Secure' },
+                { icon: <Zap size={12} />, text: 'Groq AI' },
+                { icon: <GitBranch size={12} />, text: 'Ready' }
+              ].map((item, i) => (
+                <div key={i} style={{ 
+                  display: 'flex', alignItems: 'center', gap: '0.35rem', 
+                  fontSize: '0.65rem', color: 'var(--text-4)', fontWeight: 600,
+                  padding: '4px 10px', background: 'rgba(255,255,255,0.02)', 
+                  border: '1px solid rgba(255,255,255,0.05)', borderRadius: 99
+                }}>
+                  <span style={{ color: '#a78bfa' }}>{item.icon}</span>
+                  {item.text}
+                </div>
+              ))}
             </div>
           </div>
         </div>
