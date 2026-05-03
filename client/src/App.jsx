@@ -24,6 +24,7 @@ const InterviewMode           = lazy(() => import('./pages/InterviewMode'));
 const DiagramEditor           = lazy(() => import('./pages/DiagramEditor'));
 const WhatIfSimulator         = lazy(() => import('./pages/WhatIfSimulator'));
 const ArchitectureComparison  = lazy(() => import('./pages/ArchitectureComparison'));
+const ResetPassword           = lazy(() => import('./pages/ResetPassword'));
 
 const PageLoader = () => (
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', gap: '0.75rem', color: 'var(--text-3)', fontSize: '0.875rem' }}>
@@ -60,6 +61,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login"          element={user ? <Navigate to="/" replace /> : <Suspense fallback={<PageLoader />}><Login /></Suspense>} />
       <Route path="/register"       element={user ? <Navigate to="/" replace /> : <Suspense fallback={<PageLoader />}><Register /></Suspense>} />
+      <Route path="/reset-password/:token" element={user ? <Navigate to="/" replace /> : <Suspense fallback={<PageLoader />}><ResetPassword /></Suspense>} />
       <Route path="/auth/callback"  element={<Suspense fallback={<PageLoader />}><AuthCallback /></Suspense>} />
       <Route path="/"               element={<P><Home /></P>} />
       <Route path="/system-design"  element={<P><SystemDesign /></P>} />

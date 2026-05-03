@@ -140,6 +140,8 @@ export default function Register() {
     return e;
   };
 
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     const errs = validate();
@@ -147,8 +149,8 @@ export default function Register() {
     setErrors({});
     const result = await register(form.name.trim(), form.email.trim().toLowerCase(), form.password);
     if (result.success) {
-      toast.success('Registered successfully! Please sign in.');
-      navigate('/login');
+      setIsSuccess(true);
+      toast.success('Account created successfully!');
     }
     else setServerErr(result.message);
   };
@@ -221,164 +223,184 @@ export default function Register() {
         </div>
 
         <div className="auth-form-container auth-form-container--register">
-          {/* Mobile logo */}
-          <div className="auth-mobile-logo">
-            <div className="auth-logo-icon auth-logo-icon-sm">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white"/>
-              </svg>
-            </div>
-            <span style={{ fontSize: '1rem', fontWeight: 800, color: '#eef2ff', letterSpacing: '-0.02em' }}>DevFlow <span style={{ background: 'linear-gradient(135deg, #c4b5fd, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>AI</span></span>
-          </div>
-
-          <div className="auth-form-header">
-            <h1 className="auth-form-title">
-              Create your <span style={{ background: 'linear-gradient(135deg, #c4b5fd, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>account</span>
-            </h1>
-            <p className="auth-form-subtitle">Start building smarter with AI — it's completely free</p>
-          </div>
-
-          {serverErr && (
-            <div className="auth-error-banner">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              {serverErr}
-            </div>
-          )}
-
-          {/* OAuth */}
-          <div className="auth-oauth-row">
-            <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/google`} className="auth-oauth-btn">
-              <GoogleIcon /> Continue with Google
-            </a>
-            <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/github`} className="auth-oauth-btn auth-oauth-btn-github">
-              <GitHubIcon /> Continue with GitHub
-            </a>
-          </div>
-
-          <div className="auth-divider">
-            <span>or register with email</span>
-          </div>
-
-          <form onSubmit={handleSubmit} noValidate className="auth-form">
-            {/* Name */}
-            <div className={`auth-field ${focused === 'name' ? 'auth-field--focused' : ''} ${errors.name ? 'auth-field--error' : ''} ${form.name ? 'auth-field--filled' : ''}`}>
-              <label className="auth-label">Full name</label>
-              <div className="auth-input-wrap">
-                <svg className="auth-input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          {isSuccess ? (
+            <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+              <div style={{ width: 64, height: 64, background: 'rgba(52, 211, 153, 0.1)', border: '1px solid rgba(52, 211, 153, 0.2)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
                 </svg>
-                <input
-                  type="text"
-                  {...field('name')}
-                  placeholder="John Doe"
-                  autoComplete="name"
-                  className="auth-input"
-                />
               </div>
-              {errors.name && (
-                <p className="auth-field-error">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  {errors.name}
-                </p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div className={`auth-field ${focused === 'email' ? 'auth-field--focused' : ''} ${errors.email ? 'auth-field--error' : ''} ${form.email ? 'auth-field--filled' : ''}`}>
-              <label className="auth-label">Email address</label>
-              <div className="auth-input-wrap">
-                <svg className="auth-input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'white', marginBottom: '0.75rem' }}>Account Created!</h2>
+              <p style={{ color: 'var(--text-3)', marginBottom: '2rem', lineHeight: 1.6 }}>Your account has been successfully created. You can now sign in to start building.</p>
+              <Link to="/login" className="auth-submit-btn" style={{ textDecoration: 'none' }}>
+                Go to Sign In
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
                 </svg>
-                <input
-                  type="email"
-                  {...field('email')}
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  className="auth-input"
-                />
-              </div>
-              {errors.email && (
-                <p className="auth-field-error">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  {errors.email}
-                </p>
-              )}
+              </Link>
             </div>
-
-            {/* Password */}
-            <div className={`auth-field ${focused === 'password' ? 'auth-field--focused' : ''} ${errors.password ? 'auth-field--error' : ''} ${form.password ? 'auth-field--filled' : ''}`}>
-              <label className="auth-label">Password</label>
-              <div className="auth-input-wrap">
-                <svg className="auth-input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
-                </svg>
-                <input
-                  type={showPw ? 'text' : 'password'}
-                  {...field('password')}
-                  placeholder="Minimum 8 characters"
-                  autoComplete="new-password"
-                  className="auth-input"
-                  style={{ paddingRight: '2.75rem' }}
-                />
-                <button type="button" className="auth-pw-toggle" onClick={() => setShowPw(p => !p)}>
-                  {showPw ? <EyeOffIcon /> : <EyeIcon />}
-                </button>
+          ) : (
+            <>
+              {/* Mobile logo */}
+              <div className="auth-mobile-logo">
+                <div className="auth-logo-icon auth-logo-icon-sm">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="white"/>
+                  </svg>
+                </div>
+                <span style={{ fontSize: '1rem', fontWeight: 800, color: '#eef2ff', letterSpacing: '-0.02em' }}>DevFlow <span style={{ background: 'linear-gradient(135deg, #c4b5fd, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>AI</span></span>
               </div>
 
-              {/* Strength meter */}
-              {form.password.length > 0 && (
-                <div style={{ marginTop: '0.5rem' }}>
-                  <div className="auth-strength-bar">
-                    {[1,2,3,4].map(i => (
-                      <span key={i} style={{
-                        flex: 1, height: '3px', borderRadius: 99,
-                        background: i <= score ? STRENGTH_COLORS[score] : 'var(--border)',
-                        transition: 'background 0.3s ease',
-                      }} />
-                    ))}
-                  </div>
-                  <p style={{ fontSize: '0.68rem', marginTop: '0.2rem', color: STRENGTH_COLORS[score], fontWeight: 600 }}>
-                    {STRENGTH_LABELS[score]}
-                  </p>
+              <div className="auth-form-header">
+                <h1 className="auth-form-title">
+                  Create your <span style={{ background: 'linear-gradient(135deg, #c4b5fd, #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>account</span>
+                </h1>
+                <p className="auth-form-subtitle">Start building smarter with AI — it's completely free</p>
+              </div>
+
+              {serverErr && (
+                <div className="auth-error-banner">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  {serverErr}
                 </div>
               )}
-              {errors.password && (
-                <p className="auth-field-error">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  {errors.password}
+
+              {/* OAuth */}
+              <div className="auth-oauth-row">
+                <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/google`} className="auth-oauth-btn">
+                  <GoogleIcon /> Continue with Google
+                </a>
+                <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/github/auth`} className="auth-oauth-btn auth-oauth-btn-github">
+                  <GitHubIcon /> Continue with GitHub
+                </a>
+              </div>
+
+              <div className="auth-divider">
+                <span>or register with email</span>
+              </div>
+
+              <form onSubmit={handleSubmit} noValidate className="auth-form">
+                {/* Name */}
+                <div className={`auth-field ${focused === 'name' ? 'auth-field--focused' : ''} ${errors.name ? 'auth-field--error' : ''} ${form.name ? 'auth-field--filled' : ''}`}>
+                  <label className="auth-label">Full name</label>
+                  <div className="auth-input-wrap">
+                    <svg className="auth-input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <input
+                      type="text"
+                      {...field('name')}
+                      placeholder="John Doe"
+                      autoComplete="name"
+                      className="auth-input"
+                    />
+                  </div>
+                  {errors.name && (
+                    <p className="auth-field-error">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email */}
+                <div className={`auth-field ${focused === 'email' ? 'auth-field--focused' : ''} ${errors.email ? 'auth-field--error' : ''} ${form.email ? 'auth-field--filled' : ''}`}>
+                  <label className="auth-label">Email address</label>
+                  <div className="auth-input-wrap">
+                    <svg className="auth-input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <input
+                      type="email"
+                      {...field('email')}
+                      placeholder="you@example.com"
+                      autoComplete="email"
+                      className="auth-input"
+                    />
+                  </div>
+                  {errors.email && (
+                    <p className="auth-field-error">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+
+                {/* Password */}
+                <div className={`auth-field ${focused === 'password' ? 'auth-field--focused' : ''} ${errors.password ? 'auth-field--error' : ''} ${form.password ? 'auth-field--filled' : ''}`}>
+                  <label className="auth-label">Password</label>
+                  <div className="auth-input-wrap">
+                    <svg className="auth-input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                    </svg>
+                    <input
+                      type={showPw ? 'text' : 'password'}
+                      {...field('password')}
+                      placeholder="Minimum 8 characters"
+                      autoComplete="new-password"
+                      className="auth-input"
+                      style={{ paddingRight: '2.75rem' }}
+                    />
+                    <button type="button" className="auth-pw-toggle" onClick={() => setShowPw(p => !p)}>
+                      {showPw ? <EyeOffIcon /> : <EyeIcon />}
+                    </button>
+                  </div>
+
+                  {/* Strength meter */}
+                  {form.password.length > 0 && (
+                    <div style={{ marginTop: '0.5rem' }}>
+                      <div className="auth-strength-bar">
+                        {[1,2,3,4].map(i => (
+                          <span key={i} style={{
+                            flex: 1, height: '3px', borderRadius: 99,
+                            background: i <= score ? STRENGTH_COLORS[score] : 'var(--border)',
+                            transition: 'background 0.3s ease',
+                          }} />
+                        ))}
+                      </div>
+                      <p style={{ fontSize: '0.68rem', marginTop: '0.2rem', color: STRENGTH_COLORS[score], fontWeight: 600 }}>
+                        {STRENGTH_LABELS[score]}
+                      </p>
+                    </div>
+                  )}
+                  {errors.password && (
+                    <p className="auth-field-error">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+
+                <button type="submit" disabled={loading} className="auth-submit-btn">
+                  {loading ? (
+                    <>
+                      <span className="auth-spinner" />
+                      Creating account…
+                    </>
+                  ) : (
+                    <>
+                      Create free account
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                      </svg>
+                    </>
+                  )}
+                </button>
+
+                <p className="auth-terms">
+                  By creating an account, you agree to our{' '}
+                  <span style={{ color: '#c4b5fd', cursor: 'pointer' }}>Terms of Service</span>
+                  {' '}and{' '}
+                  <span style={{ color: '#c4b5fd', cursor: 'pointer' }}>Privacy Policy</span>.
                 </p>
-              )}
-            </div>
+              </form>
 
-            <button type="submit" disabled={loading} className="auth-submit-btn">
-              {loading ? (
-                <>
-                  <span className="auth-spinner" />
-                  Creating account…
-                </>
-              ) : (
-                <>
-                  Create free account
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-                  </svg>
-                </>
-              )}
-            </button>
-
-            <p className="auth-terms">
-              By creating an account, you agree to our{' '}
-              <span style={{ color: '#c4b5fd', cursor: 'pointer' }}>Terms of Service</span>
-              {' '}and{' '}
-              <span style={{ color: '#c4b5fd', cursor: 'pointer' }}>Privacy Policy</span>.
-            </p>
-          </form>
-
-          <p className="auth-footer-text">
-            Already have an account?{' '}
-            <Link to="/login" className="auth-footer-link">Sign in →</Link>
-          </p>
+              <p className="auth-footer-text">
+                Already have an account?{' '}
+                <Link to="/login" className="auth-footer-link">Sign in →</Link>
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>

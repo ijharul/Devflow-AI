@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { body } = require('express-validator');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { register, login, getMe, forgotPassword } = require('../controllers/authController');
+const { register, login, getMe, forgotPassword, resetPassword } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
 const registerValidation = [
@@ -20,6 +20,7 @@ router.post('/register', registerValidation, register);
 router.post('/login', loginValidation, login);
 router.get('/me', protect, getMe);
 router.post('/forgot-password', forgotPassword);
+router.post('/reset-password', resetPassword);
 
 // Google OAuth
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'], session: false }));

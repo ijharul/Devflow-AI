@@ -357,7 +357,7 @@ export default function Login() {
 
             <div className="auth-oauth-row">
               <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/google`} className="auth-oauth-btn"><GoogleIcon /> Continue with Google</a>
-              <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/github`} className="auth-oauth-btn auth-oauth-btn-github"><GitHubIcon /> Continue with GitHub</a>
+              <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/github/auth`} className="auth-oauth-btn auth-oauth-btn-github"><GitHubIcon /> Continue with GitHub</a>
             </div>
 
             <div className="auth-divider"><span>or sign in with email</span></div>

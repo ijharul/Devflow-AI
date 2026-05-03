@@ -129,7 +129,7 @@ const forgotPassword = async (req, res, next) => {
       { expiresIn: '1h' }
     );
 
-    const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
     // Setup nodemailer with better config for production
     const transporter = nodemailer.createTransport({
@@ -180,4 +180,33 @@ const forgotPassword = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe, forgotPassword };
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token, password } = req.body;
+    if (!token || !password) {
+      return res.status(400).json({ success: false, message: 'Token and password are required' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (decoded.purpose !== 'reset') {
+      return res.status(400).json({ success: false, message: 'Invalid token purpose' });
+    }
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.password = password; // Will be hashed by pre-save middleware
+    await user.save();
+
+    res.json({ success: true, message: 'Password has been reset successfully. Please log in.' });
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') {
+      return res.status(400).json({ success: false, message: 'Reset link has expired' });
+    }
+    next(err);
+  }
+};
+
+module.exports = { register, login, getMe, forgotPassword, resetPassword };

@@ -42,7 +42,7 @@ export default function GitHubRepos() {
           <h1 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'white' }}>GitHub Repo Analyzer</h1>
           <p style={{ fontSize: '0.7rem', color: 'var(--text-3)' }}>Import any repo → generate system design, DevOps pipeline & deploy with AI</p>
         </div>
-        <a href="/api/github/auth" style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.875rem', background: '#151728', border: '1px solid #2a2d46', borderRadius: 8, color: '#94a3b8', fontSize: '0.75rem', fontWeight: 500, textDecoration: 'none', transition: 'all 0.15s' }}
+        <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/github/auth`} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 0.875rem', background: '#151728', border: '1px solid #2a2d46', borderRadius: 8, color: '#94a3b8', fontSize: '0.75rem', fontWeight: 500, textDecoration: 'none', transition: 'all 0.15s' }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = '#4a5070'; e.currentTarget.style.color = '#e2e8f0'; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--text-4)'; e.currentTarget.style.color = '#94a3b8'; }}>
           <GitBranch size={13} /> Connect GitHub
