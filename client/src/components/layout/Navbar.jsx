@@ -46,13 +46,8 @@ export default function Navbar({ onToggleSidebar }) {
         </span>
       </div>
 
-      {/* Right: status + user */}
+      {/* Right: user */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-        {/* AI status chip */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem', padding: '0.25rem 0.625rem', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: 99 }}>
-          <div className="status-dot online" style={{ width: 6, height: 6 }} />
-          <span className="desktop-only" style={{ fontSize: '0.65rem', color: '#34d399', fontWeight: 600 }}>AI Ready</span>
-        </div>
 
         {/* User */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.25rem 0.5rem', borderRadius: 99, background: 'rgba(255,255,255,0.04)', border: '1px solid var(--border)' }}>

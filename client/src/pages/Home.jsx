@@ -204,9 +204,10 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Stats Grid - Fixed 2x2 for desktop */}
+          {/* Stats Grid - Fixed 2x2 for desktop, responsive for mobile */}
           <div className="hero-stats-grid" style={{ 
-            flex: '0 0 340px', 
+            flex: '1 1 300px', 
+            maxWidth: '100%',
             display: 'grid', 
             gridTemplateColumns: 'repeat(2, 1fr)', 
             gap: '0.75rem',

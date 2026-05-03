@@ -131,17 +131,13 @@ const forgotPassword = async (req, res, next) => {
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    // Final Robust Config for Render: Port 465 + Pool
+    // Use 'service' mode for maximum compatibility with Gmail
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // SSL
-      pool: true,   // Use connection pooling
+      service: 'gmail',
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
       },
-      connectionTimeout: 10000, // 10s
     });
 
     const mailOptions = {
