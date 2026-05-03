@@ -108,6 +108,9 @@ const getMe = async (req, res, next) => {
 
 // Forgot password — generates a reset token stored on the user.
 // In production wire this up to an email service (SendGrid, Resend, etc.).
+// Forgot password — generates a reset token and sends via email
+const nodemailer = require('nodemailer');
+
 const forgotPassword = async (req, res, next) => {
   try {
     const email = (req.body.email || '').trim().toLowerCase();
@@ -115,30 +118,49 @@ const forgotPassword = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Email is required' });
     }
 
-    // Always respond 200 to prevent email enumeration
     const user = await User.findOne({ email });
     if (!user) {
       return res.json({ success: true, message: 'If an account exists with this email, a reset link has been sent.' });
     }
 
-    // Generate a simple signed reset token (valid 1 hour)
     const resetToken = jwt.sign(
       { id: user._id, purpose: 'reset' },
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
 
-    // In development, log the reset link
     const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[auth] Password reset link for ${email}: ${resetUrl}`);
-    }
 
-    // TODO: Send email via SendGrid/Resend/Nodemailer in production
-    // await sendResetEmail(email, resetUrl);
+    // Setup nodemailer
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: `"DevFlow AI" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: 'Password Reset Request - DevFlow AI',
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="color: #7c3aed;">Password Reset</h2>
+          <p>You requested a password reset for your DevFlow AI account. Click the button below to set a new password:</p>
+          <a href="${resetUrl}" style="display: inline-block; padding: 12px 24px; background-color: #7c3aed; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0;">Reset Password</a>
+          <p>This link will expire in 1 hour. If you didn't request this, you can safely ignore this email.</p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+          <p style="font-size: 12px; color: #666;">DevFlow AI - The intelligent developer playground.</p>
+        </div>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
 
     res.json({ success: true, message: 'If an account exists with this email, a reset link has been sent.' });
   } catch (err) {
+    console.error('[auth] Forgot password error:', err);
     next(err);
   }
 };

@@ -247,10 +247,10 @@ export default function Register() {
 
           {/* OAuth */}
           <div className="auth-oauth-row">
-            <a href="/api/auth/google" className="auth-oauth-btn">
+            <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/google`} className="auth-oauth-btn">
               <GoogleIcon /> Continue with Google
             </a>
-            <a href="/api/github/auth" className="auth-oauth-btn auth-oauth-btn-github">
+            <a href={`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/auth/github`} className="auth-oauth-btn auth-oauth-btn-github">
               <GitHubIcon /> Continue with GitHub
             </a>
           </div>
