@@ -131,13 +131,16 @@ const forgotPassword = async (req, res, next) => {
 
     const resetUrl = `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`;
 
-    // Setup nodemailer
+    // Setup nodemailer with better config for production
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // Use SSL
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD,
       },
+      connectionTimeout: 10000, // 10 seconds timeout
     });
 
     const mailOptions = {
@@ -156,12 +159,15 @@ const forgotPassword = async (req, res, next) => {
       `,
     };
 
+    console.log(`[auth] Attempting to send reset email to: ${email}`);
     await transporter.sendMail(mailOptions);
+    console.log(`[auth] Reset email sent successfully to: ${email}`);
 
     res.json({ success: true, message: 'If an account exists with this email, a reset link has been sent.' });
   } catch (err) {
-    console.error('[auth] Forgot password error:', err);
-    next(err);
+    console.error('[auth] SMTP Error:', err.message);
+    // Even if email fails, don't crash, but send a proper error to frontend
+    res.status(503).json({ success: false, message: 'Email service is temporarily unavailable. Please try again later.' });
   }
 };
 

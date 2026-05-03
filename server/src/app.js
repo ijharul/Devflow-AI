@@ -21,19 +21,13 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+// Trust proxy for secure cookies and correct redirect URIs in production (Render/Vercel)
+app.set('trust proxy', 1);
+
 // Security headers
-// Security headers - Relaxed for production deployment
+// Security headers - Relaxed for production debugging
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdnjs.cloudflare.com"],
-      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://cdnjs.cloudflare.com'],
-      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:', 'https://cdnjs.cloudflare.com'],
-      imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
-      connectSrc: ["'self'", "*"], // Temporarily allow all for debugging
-    },
-  },
+  contentSecurityPolicy: false, // Temporarily disabled to debug CSP blocks
   crossOriginEmbedderPolicy: false,
 }));
 
