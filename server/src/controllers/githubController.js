@@ -253,4 +253,4 @@ const autoGenerate = async (req, res, next) => {
   } catch (err) { next(err); }
 };
 
-module.exports = { importRepo, generateSystemDesign, generateDevOps, deployChat, listRepos, getRepo, autoGenerate };
+module.exports = { importRepo, generateSystemDesign, generateDevOps, deployChat, listRepos, listGitHubUserRepos, getRepo, autoGenerate };
